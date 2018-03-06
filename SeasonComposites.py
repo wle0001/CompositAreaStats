@@ -12,9 +12,7 @@ runs zonal statistics for an input polygon.
 
 
 import ee
-import sys
 import pandas as pd
-import matplotlib.pyplot as plt
 import numpy as np
 from rasterstats import zonal_stats
 import urllib2
