@@ -96,7 +96,7 @@ for i in range(startyear,endyear+1):
         # convert dict to DF and save as csv
         a = pd.DataFrame.from_dict(stats)
         # Add GridCodes
-        a['GridCode'] = gridCode
+        a['GridCode'] = gridCode.iloc[:,0]
         #Rearrange Columns
         a = a[['GridCode','mean','min','max','std']]
         
