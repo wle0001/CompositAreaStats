@@ -19,4 +19,4 @@ shp > set to the shapefile that your area stats are based on .. the zone of your
 
 gridCodes > set to the HucGrids.csv file
 
-The boundsing box needs the extend beyon the shapefile boundaries.
+**The bounding box needs to extend beyond the shapefile boundaries.**
