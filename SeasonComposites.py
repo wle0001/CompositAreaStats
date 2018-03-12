@@ -1,16 +1,22 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
-Created on Thu Feb  8 08:09:06 2018
-
-@author: wellenbu
-
-Script that utilized GEE to aggragate quaterly means of a dataset, dowloads and
-runs zonal statistics for an input polygon. 
-
+#********************************************************
+FILE: SeasonComposites.py
+AUTHOR: wellenbu
+EMAIL: wle0001@uah.edu
+MODIFIED BY: rlucey
+EMAIL: rml0018@uah.edu
+ORGANIZATION: SERVIR
+CREATION DATE: 02/08/2018
+LAST MOD DATE: 03/12/2018
+PURPOSE: Utilizes GEE to aggragate quaterly means of a dataset, downloads and runs zonal statistics for an input polygon
+DEPENDENCIES: pandas, numpy, rasterstats, urllib2, os, glob
+NOTES: Earth Engine API must be installed and Google Earth Engine must be authorized
+#********************************************************
 """
 
-
+#import packages
 import ee
 import pandas as pd
 import numpy as np
@@ -19,10 +25,14 @@ import urllib2
 import os
 import glob
 
+#initialize the google earth engine python API
 ee.Initialize()
 
+#output directory
 tifDir = '/Users/wellenbu/Documents/UAH/SPARROW/qtifs/'
+#set to the HucGrids.csv file - which is a list of the grid IDs
 gridCode = pd.read_csv(tifDir[:-6]+'HucGrids.csv')
+#set to the zones for your zonal stats
 shp = tifDir[:-6]+'USGSdata/Catchments_NHDPlusv2_Hydroregion03/Catchment_03NSW.shp'
 
 # Define Date Variables 
@@ -55,15 +65,15 @@ maxDF = gridCode
 stdDF = gridCode
 
 
-# Loop through year and quater(JFM, AMJ, JAS, OND)
-# quater loop: [start month, end month, quater]
+# Loop through year and quarter(JFM, AMJ, JAS, OND)
+# quarter loop: [start month, end month, quarter]
 for i in range(startyear,endyear+1):
     for q in [[1,3,1],[4,6,2],[7,9,3],[10,12,4]]:
         # name dir + q#_YEAR
         name = tifDir+'q'+str(q[2])+'_'+str(i)
         t1 = ee.Date.fromYMD(i,1,1)
         t2 = ee.Date.fromYMD(i,12,31)
-        # Mean arcoss given quater
+        # Mean arcoss given quarter
         out = EVI.filterDate(t1,t2)\
             .filter(ee.Filter.calendarRange(q[0], q[1], 'month'))\
             .mean().rename('q'+str(q[2])+'_'+str(i))
